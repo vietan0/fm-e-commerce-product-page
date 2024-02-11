@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 
 import cartLogo from './assets/images/icon-cart.svg';
+import closeIcon from './assets/images/icon-close.svg';
+import menuIcon from './assets/images/icon-menu.svg';
 import avatar from './assets/images/image-avatar.png';
 import sneakersLogo from './assets/images/logo.svg';
 
@@ -9,12 +11,13 @@ const links = ['Collections', 'Men', 'Women', 'About', 'Contact'];
 
 export default function Header() {
   const [hoverAnchor, setHoverAnchor] = useState('');
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const linkElems = links.map((link) => (
-    <li key={link} className="relative flex flex-col px-3 text-grey-blue-50">
+    <li key={link} className="relative flex flex-col">
       <a
         href="#"
-        className="py-8 text-sm"
+        className="px-6 py-4 font-bold text-grey-blue-50 hover:text-orange sm:px-3 sm:py-8 sm:text-sm sm:font-normal"
         onMouseEnter={() => setHoverAnchor(link)}
       >
         {link}
@@ -33,21 +36,47 @@ export default function Header() {
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className="sticky flex w-full max-w-screen-lg justify-between gap-2 border-b-2 px-8 lg:px-0"
+      className="sticky flex w-full max-w-screen-lg justify-between gap-4 border-b-2 bg-white px-4 xs:gap-0 sm:px-6 lg:px-0"
     >
-      <nav className="flex items-center gap-4 md:gap-8 lg:gap-12">
+      <nav className="flex items-center xs:gap-2 md:gap-8 lg:gap-12">
+        <button
+          onClick={() => setMenuOpen((prev) => !prev)}
+          className="mr-2 grid h-10 w-10 place-content-center rounded hover:bg-black/5 sm:hidden"
+        >
+          <img src={menuIcon} alt="" className="w-full" />
+        </button>
         <a href="#">
-          <img src={sneakersLogo} alt="" className="min-w-24" />
+          <img src={sneakersLogo} alt="" className="min-w-24 py-8" />
         </a>
-        <ul className="flex" onMouseLeave={() => setHoverAnchor('')}>
+        {menuOpen && (
+          <div
+            id="backdrop"
+            className="fixed left-0 top-0 h-screen w-screen bg-black/25 sm:hidden"
+            onClick={() => setMenuOpen(false)}
+          />
+        )}
+        <motion.ul
+          initial={{ x: 'var(--menu-offscreen)' }}
+          animate={{ x: menuOpen ? 0 : 'var(--menu-offscreen)' }}
+          onMouseLeave={() => setHoverAnchor('')}
+          className="fixed left-4 top-4 flex h-[calc(100vh_-_2rem)] w-[calc(100vw_-_2rem)] flex-col rounded-lg bg-white py-4 [--menu-offscreen:-400px] xs:max-w-[368px] sm:static sm:h-auto sm:w-auto sm:max-w-full sm:flex-row sm:py-0 sm:outline-none sm:[--menu-offscreen:0px]"
+        >
+          <li id="button-container" className="mb-8 px-4 sm:hidden">
+            <button
+              onClick={() => setMenuOpen(false)}
+              className="grid h-10 w-10 place-content-center rounded hover:bg-black/5"
+            >
+              <img src={closeIcon} alt="" />
+            </button>
+          </li>
           {linkElems}
-        </ul>
+        </motion.ul>
       </nav>
       <div id="right" className="flex items-center gap-4 lg:gap-8">
-        <button className="grid h-10 w-10 place-content-center rounded-full outline outline-1 outline-grey-blue-75">
-          <img src={cartLogo} alt="" />
+        <button className="grid h-8 w-8 place-content-center rounded-full outline outline-1 outline-grey-blue-75 hover:outline-none hover:outline-4 hover:outline-orange xs:h-10 xs:w-10">
+          <img src={cartLogo} alt="" className="w-4 xs:w-5" />
         </button>
-        <button className="grid h-10 w-10 place-content-center rounded-full hover:outline hover:outline-orange">
+        <button className="grid h-8 w-8 place-content-center rounded-full hover:outline hover:outline-orange xs:h-10 xs:w-10">
           <img src={avatar} alt="" />
         </button>
       </div>

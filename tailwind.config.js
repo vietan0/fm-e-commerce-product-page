@@ -9,7 +9,7 @@ export default {
         sans: ['Kumbh Sans', ...defaultTheme.fontFamily.sans],
       },
       colors: {
-        lightbox: 'hsl(0, 0%, 0% / 75%)',
+        lightbox: 'hsl(0 0% 0% / 75%)',
         orange: 'hsl(26, 100%, 55%)',
         'pale-orange': 'hsl(25, 100%, 94%)',
         'grey-blue-98': 'hsl(223, 64%, 98%)',
