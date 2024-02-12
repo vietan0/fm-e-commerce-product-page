@@ -1,5 +1,7 @@
-import { motion } from 'framer-motion';
+import clsx from 'clsx';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 
 import cartLogo from './assets/images/icon-cart.svg';
 import closeIcon from './assets/images/icon-close.svg';
@@ -12,12 +14,26 @@ const links = ['Collections', 'Men', 'Women', 'About', 'Contact'];
 export default function Header() {
   const [hoverAnchor, setHoverAnchor] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
+  const isSM = useMediaQuery({ query: '(min-width: 640px)' });
+
+  function showUl() {
+    let result;
+    if (isSM)
+      // big screen
+      result = true;
+    else {
+      // small screen
+      if (menuOpen) result = true;
+      else result = false;
+    }
+    return result;
+  }
 
   const linkElems = links.map((link) => (
     <li key={link} className="relative flex flex-col">
       <a
         href="#"
-        className="px-6 py-4 font-bold text-grey-blue-50 hover:text-orange sm:px-3 sm:py-8 sm:text-sm sm:font-normal"
+        className="z-10 px-6 py-4 font-bold text-grey-blue-50 hover:text-orange sm:px-3 sm:py-8 sm:text-sm sm:font-normal"
         onMouseEnter={() => setHoverAnchor(link)}
       >
         {link}
@@ -26,7 +42,10 @@ export default function Header() {
         <motion.div
           layoutId="underline"
           transition={{ duration: 0.15 }}
-          className="absolute bottom-0 left-0 h-[2px] w-full bg-orange"
+          className={clsx(
+            menuOpen ? 'border-l-4' : 'border-b-4',
+            'absolute bottom-0 left-0 h-full w-full border-orange bg-grey-blue-98/60',
+          )}
         />
       )}
     </li>
@@ -48,29 +67,39 @@ export default function Header() {
         <a href="#">
           <img src={sneakersLogo} alt="" className="min-w-24 py-8" />
         </a>
-        {menuOpen && (
-          <div
-            id="backdrop"
-            className="fixed left-0 top-0 h-screen w-screen bg-black/25 sm:hidden"
-            onClick={() => setMenuOpen(false)}
-          />
-        )}
-        <motion.ul
-          initial={{ x: 'var(--menu-offscreen)' }}
-          animate={{ x: menuOpen ? 0 : 'var(--menu-offscreen)' }}
-          onMouseLeave={() => setHoverAnchor('')}
-          className="fixed left-4 top-4 flex h-[calc(100vh_-_2rem)] w-[calc(100vw_-_2rem)] flex-col rounded-lg bg-white py-4 [--menu-offscreen:-400px] xs:max-w-[368px] sm:static sm:h-auto sm:w-auto sm:max-w-full sm:flex-row sm:py-0 sm:outline-none sm:[--menu-offscreen:0px]"
-        >
-          <li id="button-container" className="mb-8 px-4 sm:hidden">
-            <button
+        <AnimatePresence>
+          {menuOpen && !isSM && (
+            <motion.div
+              key="backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              id="backdrop"
+              className="fixed left-0 top-0 h-screen w-screen bg-black/25"
               onClick={() => setMenuOpen(false)}
-              className="grid h-10 w-10 place-content-center rounded hover:bg-black/5"
+            />
+          )}
+          {showUl() && (
+            <motion.ul
+              key="ul"
+              initial={{ x: -400 }}
+              animate={{ x: 0 }}
+              exit={{ x: -400 }}
+              onMouseLeave={() => setHoverAnchor('')}
+              className="fixed left-4 top-4 flex h-[calc(100vh_-_2rem)] w-[calc(100vw_-_2rem)] flex-col rounded-lg bg-white py-4 xs:max-w-[368px] sm:static sm:h-auto sm:w-auto sm:max-w-full sm:flex-row sm:py-0"
             >
-              <img src={closeIcon} alt="" />
-            </button>
-          </li>
-          {linkElems}
-        </motion.ul>
+              <li id="button-container" className="mb-8 px-4 sm:hidden">
+                <button
+                  onClick={() => setMenuOpen(false)}
+                  className="grid h-10 w-10 place-content-center rounded hover:bg-grey-blue-98"
+                >
+                  <img src={closeIcon} alt="" />
+                </button>
+              </li>
+              {linkElems}
+            </motion.ul>
+          )}
+        </AnimatePresence>
       </nav>
       <div id="right" className="flex items-center gap-4 lg:gap-8">
         <button className="grid h-8 w-8 place-content-center rounded-full outline outline-1 outline-grey-blue-75 hover:outline-none hover:outline-4 hover:outline-orange xs:h-10 xs:w-10">
