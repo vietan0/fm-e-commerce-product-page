@@ -11,6 +11,39 @@ import sneakersLogo from './assets/images/logo.svg';
 
 const links = ['Collections', 'Men', 'Women', 'About', 'Contact'];
 
+const ulVariants = {
+  open: {
+    x: 0,
+    transition: { staggerChildren: 0.06 },
+  },
+  closed: {
+    x: -400,
+    transition: {
+      staggerChildren: 0.02,
+      staggerDirection: -1,
+      when: 'afterChildren',
+    },
+  },
+};
+
+const liVariants = {
+  open: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: 'tween',
+      stiffness: 1000,
+    },
+  },
+  closed: {
+    y: 50,
+    opacity: 0,
+    transition: {
+      duration: 0.15,
+    },
+  },
+};
+
 export default function Header() {
   const [hoverAnchor, setHoverAnchor] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
@@ -30,7 +63,11 @@ export default function Header() {
   }
 
   const linkElems = links.map((link) => (
-    <li key={link} className="relative flex flex-col">
+    <motion.li
+      variants={liVariants}
+      key={link}
+      className="relative flex flex-col"
+    >
       <a
         href="#"
         className="z-10 px-6 py-4 font-bold text-grey-blue-50 hover:text-orange sm:px-3 sm:py-8 sm:text-sm sm:font-normal"
@@ -48,7 +85,7 @@ export default function Header() {
           )}
         />
       )}
-    </li>
+    </motion.li>
   ));
 
   return (
@@ -73,7 +110,7 @@ export default function Header() {
               key="backdrop"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              exit={{ opacity: 0, transition: { delay: 0.3 } }}
               id="backdrop"
               className="fixed left-0 top-0 h-screen w-screen bg-black/25"
               onClick={() => setMenuOpen(false)}
@@ -82,9 +119,10 @@ export default function Header() {
           {showUl() && (
             <motion.ul
               key="ul"
-              initial={{ x: -400 }}
-              animate={{ x: 0 }}
-              exit={{ x: -400 }}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={ulVariants}
               onMouseLeave={() => setHoverAnchor('')}
               className="fixed left-4 top-4 flex h-[calc(100vh_-_2rem)] w-[calc(100vw_-_2rem)] flex-col rounded-lg bg-white py-4 xs:max-w-[368px] sm:static sm:h-auto sm:w-auto sm:max-w-full sm:flex-row sm:py-0"
             >
