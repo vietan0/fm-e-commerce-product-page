@@ -1,8 +1,13 @@
+import { nextui } from '@nextui-org/theme';
 import defaultTheme from 'tailwindcss/defaultTheme';
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
+    './node_modules/@nextui-org/theme/dist/components/popover.js',
+  ],
   theme: {
     extend: {
       fontFamily: {
@@ -23,5 +28,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [nextui()],
 };
