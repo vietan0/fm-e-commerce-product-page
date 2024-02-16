@@ -72,7 +72,7 @@ export default function ProductImages() {
   });
   return (
     <div className="flex flex-col gap-3 sm:gap-8">
-      <div className="relative overflow-hidden rounded-xl">
+      <div className="relative overflow-hidden sm:rounded-xl">
         <AnimatePresence initial={false} mode="popLayout" custom={direction}>
           <motion.img
             custom={direction}
@@ -81,27 +81,26 @@ export default function ProductImages() {
             animate="center"
             exit="exit"
             variants={variants}
-            transition={{ duration: 0.1 }}
+            transition={{ duration: 0.2 }}
             src={productImgs[index].full}
             alt=""
-            width={424}
-            height={424}
+            className="max-h-[300px] w-fit object-cover xs:max-h-[452px]"
           />
         </AnimatePresence>
         <button
           onClick={() => dispatch({ type: 'prev' })}
-          className="absolute left-4 top-1/2 z-10 grid h-6 w-6 -translate-y-1/2 place-content-center rounded-full bg-white shadow-lg hover:scale-110"
+          className="absolute left-4 top-1/2 z-10 grid h-8 w-8 -translate-y-1/2 place-content-center rounded-full bg-white/75 shadow-lg duration-100 hover:scale-110 hover:bg-white/100"
         >
           <img src={prevIcon} width={7} />
         </button>
         <button
           onClick={() => dispatch({ type: 'next' })}
-          className="absolute right-4 top-1/2 grid h-6 w-6 -translate-y-1/2 place-content-center rounded-full bg-white shadow-lg hover:scale-110"
+          className="absolute right-4 top-1/2 grid h-8 w-8 -translate-y-1/2 place-content-center rounded-full bg-white/75 shadow-lg duration-100 hover:scale-110 hover:bg-white/100"
         >
           <img src={nextIcon} width={7} />
         </button>
       </div>
-      <div className="flex gap-2 sm:gap-4">
+      <div className="hidden gap-2 px-4 xs:flex xs:gap-4 sm:px-0">
         {productImgs.map((obj, i) => (
           <button
             key={i}

@@ -9,7 +9,7 @@ export default function ProductInfo() {
   const [amountToAdd, setAmountToAdd] = useState(1);
   return (
     <div
-      className={clsx('flex flex-col gap-6 py-8 sm:py-16', {
+      className={clsx('flex flex-col gap-6 px-4 pb-12 pt-8 sm:p-0', {
         '[&_*]:outline': false,
       })}
     >
@@ -20,7 +20,7 @@ export default function ProductInfo() {
         <motion.p
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="Name text-4xl font-bold tracking-tight"
+          className="Name text-2xl font-bold tracking-tight xs:text-3xl sm:text-4xl"
         >
           Fall Limited Edition Sneakers
         </motion.p>
@@ -30,7 +30,7 @@ export default function ProductInfo() {
         Featuring a durable rubber outer sole, they'll withstand everything the
         weather can offer.
       </p>
-      <div className="Prices flex items-center justify-between gap-1 xs:flex-col xs:items-start">
+      <div className="Prices flex items-center justify-between gap-1 sm:flex-col sm:items-start">
         <div className="Left flex items-center gap-4">
           <span className="ActualPrice text-3xl font-bold tracking-wide">
             $125.00
@@ -43,8 +43,8 @@ export default function ProductInfo() {
           $250.00
         </p>
       </div>
-      <div className="Actions flex flex-col gap-3 xs:flex-row">
-        <div className="Counter flex overflow-hidden rounded-lg bg-grey-blue-98">
+      <div className="Actions flex flex-col flex-wrap gap-3 xs:flex-row [&>*]:flex-grow">
+        <div className="Counter bg-grey-blue-93 flex min-w-fit overflow-hidden rounded-lg md:max-w-40 [&>*]:flex-1">
           <button
             onClick={() =>
               setAmountToAdd((prev) => {
@@ -52,19 +52,19 @@ export default function ProductInfo() {
                 else return prev - 1;
               })
             }
-            className="grid h-12 w-12 place-content-center hover:bg-black/5"
+            className="grid h-12 min-w-12 place-content-center hover:bg-black/5"
           >
             <img src={minusIcon} alt="" />
           </button>
-          <span className="w-16 p-3 text-center font-bold">{amountToAdd}</span>
+          <span className="p-3 text-center font-bold">{amountToAdd}</span>
           <button
             onClick={() => setAmountToAdd((prev) => prev + 1)}
-            className="grid h-12 w-12 place-content-center hover:bg-black/5"
+            className="grid h-12 min-w-12 place-content-center hover:bg-black/5"
           >
             <img src={plusIcon} alt="" />
           </button>
         </div>
-        <button className="flex min-w-48 flex-grow items-center justify-center gap-4 rounded-xl bg-orange font-bold text-white duration-100 hover:bg-orange/80">
+        <button className="flex min-h-12 min-w-48 items-center justify-center gap-4 rounded-xl bg-orange font-bold text-white duration-100 hover:bg-orange/80">
           <svg
             width="22"
             height="20"
