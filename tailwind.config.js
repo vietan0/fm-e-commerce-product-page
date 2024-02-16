@@ -20,7 +20,7 @@ export default {
         'grey-blue-98': 'hsl(223, 64%, 98%)',
         'grey-blue-75': 'hsl(220, 14%, 75%)',
         'grey-blue-50': 'hsl(219, 9%, 45%)',
-        'grey-blue-10': 'hsl(220, 13%, 13%)',
+        'grey-blue-10': 'hsl(220, 23%, 15%)',
       },
       screens: {
         xs: '400px',
