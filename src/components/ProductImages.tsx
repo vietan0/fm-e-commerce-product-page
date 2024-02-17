@@ -1,13 +1,13 @@
+import { Modal, ModalBody, ModalContent } from '@nextui-org/modal';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useReducer } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
 import nextIcon from '../assets/images/icon-next.svg';
 import prevIcon from '../assets/images/icon-previous.svg';
-import galleryReducer, { Gallery } from '../galleryReducer';
+import { Gallery, GalleryAction } from '../galleryReducer';
 import productImgs from '../productImgs';
 
-const variants = {
+const galleryVariants = {
   enter: (direction: Gallery['direction']) => ({
     x: direction > 0 ? '100%' : '-100%',
     opacity: 0.5,
@@ -29,18 +29,31 @@ const thumbChildrenVarients = {
   stagger: { y: 0, opacity: 1 },
 };
 
-export default function ProductImages() {
-  const [{ index, direction }, dispatch] = useReducer(galleryReducer, {
-    index: 0,
-    direction: 1,
-  });
+type Props = {
+  inModal?: boolean;
+  index: number;
+  direction: Gallery['direction'];
+  dispatch: React.Dispatch<GalleryAction>;
+  modalOpen: boolean;
+  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function ProductImages({
+  // inModal = false,
+  index,
+  direction,
+  dispatch,
+  modalOpen,
+  setModalOpen,
+}: Props) {
   const isXS = useMediaQuery({
     query: '(min-width: 400px)',
   });
 
   return (
     <div className="flex flex-col gap-3 sm:gap-8">
-      <motion.div
+      <button onClick={() => setModalOpen(true)}>Toggle Modal</button>
+      <motion.button
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         className="relative w-screen overflow-hidden xs:w-auto sm:rounded-xl"
@@ -52,7 +65,7 @@ export default function ProductImages() {
             initial="enter"
             animate="center"
             exit="exit"
-            variants={variants}
+            variants={galleryVariants}
             transition={{ duration: 0.2 }}
             src={productImgs[index].full}
             alt=""
@@ -73,7 +86,7 @@ export default function ProductImages() {
         >
           <img src={nextIcon} width={7} />
         </button>
-      </motion.div>
+      </motion.button>
       {isXS && (
         <motion.div
           initial="init"
@@ -105,6 +118,25 @@ export default function ProductImages() {
           ))}
         </motion.div>
       )}
+      <Modal
+        size="lg"
+        isOpen={modalOpen}
+        classNames={{
+          body: 'p-6 min-h-48',
+        }}
+      >
+        <ModalContent>
+          <ModalBody>
+            <p>Body</p>
+            <button
+              onClick={() => setModalOpen(false)}
+              className="w-fit rounded px-6 py-2 outline outline-1 outline-orange"
+            >
+              Close
+            </button>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </div>
   );
 }
