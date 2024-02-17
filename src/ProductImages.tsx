@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useReducer } from 'react';
+import { useMediaQuery } from 'react-responsive';
 
 import nextIcon from './assets/images/icon-next.svg';
 import prevIcon from './assets/images/icon-previous.svg';
@@ -65,14 +66,32 @@ const variants = {
   }),
 };
 
+const thumbParentVarients = {
+  init: { transition: { staggerChildren: 0.06 } },
+  stagger: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } },
+};
+
+const thumbChildrenVarients = {
+  init: { y: -100, opacity: 0 },
+  stagger: { y: 0, opacity: 1 },
+};
+
 export default function ProductImages() {
   const [{ index, direction }, dispatch] = useReducer(reducer, {
     index: 0,
     direction: 1,
   });
+  const isXS = useMediaQuery({
+    query: '(min-width: 400px)',
+  });
+
   return (
     <div className="flex flex-col gap-3 sm:gap-8">
-      <div className="relative overflow-hidden sm:rounded-xl">
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        className="relative w-screen overflow-hidden xs:w-auto sm:rounded-xl"
+      >
         <AnimatePresence initial={false} mode="popLayout" custom={direction}>
           <motion.img
             custom={direction}
@@ -84,7 +103,9 @@ export default function ProductImages() {
             transition={{ duration: 0.2 }}
             src={productImgs[index].full}
             alt=""
-            className="max-h-[300px] w-fit object-cover xs:max-h-[452px]"
+            width={1000}
+            height={1000}
+            className="max-h-[300px] object-cover xs:max-h-[400px] sm:max-h-none"
           />
         </AnimatePresence>
         <button
@@ -99,30 +120,38 @@ export default function ProductImages() {
         >
           <img src={nextIcon} width={7} />
         </button>
-      </div>
-      <div className="hidden gap-2 px-4 xs:flex xs:gap-4 sm:px-0">
-        {productImgs.map((obj, i) => (
-          <button
-            key={i}
-            className="relative h-fit"
-            onClick={() => dispatch({ type: 'choose', payload: i })}
-          >
-            <img
-              src={obj.thumbnail}
+      </motion.div>
+      {isXS && (
+        <motion.div
+          initial="init"
+          animate="stagger"
+          variants={thumbParentVarients}
+          className="flex gap-2 px-4 xs:gap-4 sm:px-0"
+        >
+          {productImgs.map((obj, i) => (
+            <motion.button
+              variants={thumbChildrenVarients}
               key={i}
-              alt=""
-              className="rounded duration-100 hover:opacity-70 sm:rounded-md"
-            />
-            {i === index && (
-              <motion.div
-                layoutId="selected-img-animate"
-                transition={{ duration: 0.2 }}
-                className="absolute left-0 top-0 h-full w-full rounded outline outline-[3px] outline-orange sm:rounded-md"
+              className="relative h-fit"
+              onClick={() => dispatch({ type: 'choose', payload: i })}
+            >
+              <img
+                src={obj.thumbnail}
+                key={i}
+                alt=""
+                className="rounded duration-100 hover:opacity-70 sm:rounded-md"
               />
-            )}
-          </button>
-        ))}
-      </div>
+              {i === index && (
+                <motion.div
+                  layoutId="selected-img-animate"
+                  transition={{ duration: 0.2 }}
+                  className="absolute left-0 top-0 h-full w-full rounded outline outline-[3px] outline-orange sm:rounded-md"
+                />
+              )}
+            </motion.button>
+          ))}
+        </motion.div>
+      )}
     </div>
   );
 }
