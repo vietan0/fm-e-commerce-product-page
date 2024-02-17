@@ -2,8 +2,8 @@ import clsx from 'clsx';
 import { AnimatePresence, motion, useAnimate } from 'framer-motion';
 import { useReducer } from 'react';
 
-import minusIcon from './assets/images/icon-minus.svg';
-import plusIcon from './assets/images/icon-plus.svg';
+import minusIcon from '../assets/images/icon-minus.svg';
+import plusIcon from '../assets/images/icon-plus.svg';
 
 type AmountCounter = {
   amountToAdd: number;

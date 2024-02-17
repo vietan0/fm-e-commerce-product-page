@@ -1,5 +1,5 @@
-import Header from './Header';
-import ProductPage from './ProductPage';
+import Header from './components/Header';
+import ProductPage from './components/ProductPage';
 
 export default function App() {
   return (

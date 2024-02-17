@@ -3,9 +3,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
-import closeIcon from './assets/images/icon-close.svg';
-import menuIcon from './assets/images/icon-menu.svg';
-import sneakersLogo from './assets/images/logo.svg';
+import closeIcon from '../assets/images/icon-close.svg';
+import menuIcon from '../assets/images/icon-menu.svg';
+import sneakersLogo from '../assets/images/logo.svg';
 
 const links = ['Collections', 'Men', 'Women', 'About', 'Contact'];
 
