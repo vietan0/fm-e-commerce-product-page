@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useMediaQuery } from 'react-responsive';
+import useResizeObserver from 'use-resize-observer';
 
 import nextIcon from '../assets/images/icon-next.svg';
 import prevIcon from '../assets/images/icon-previous.svg';
@@ -47,15 +48,22 @@ export default function ProductImages({
   const isXS = useMediaQuery({
     query: '(min-width: 400px)',
   });
+  const isSM = useMediaQuery({
+    query: '(min-width: 640px)',
+  });
+
+  const { ref, height: imgContainerHeight } =
+    useResizeObserver<HTMLDivElement>();
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="relative my-auto flex flex-col gap-4">
       <motion.div
+        ref={ref}
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         className={clsx(
           inModal || 'xs:hover:cursor-pointer sm:rounded-xl',
-          'relative w-screen overflow-hidden xs:w-auto grid place-content-center',
+          'relative grid w-screen place-content-center overflow-hidden xs:w-auto',
         )}
         onClick={inModal ? undefined : isXS ? onOpen : undefined}
       >
@@ -78,12 +86,18 @@ export default function ProductImages({
             )}
           />
         </AnimatePresence>
+      </motion.div>
+      <div className="absolute w-full">
         <button
           onClick={(e) => {
             e.stopPropagation();
             dispatch({ type: 'prev' });
           }}
-          className="absolute left-4 top-1/2 grid h-8 w-8 -translate-y-1/2 place-content-center rounded-full bg-white/75 shadow-lg duration-100 hover:scale-110 hover:bg-white/100"
+          className={clsx(
+            inModal || !isSM ? 'left-4' : '-left-4',
+            'absolute grid h-8 w-8 -translate-y-1/2 place-content-center rounded-full bg-white shadow-lg outline outline-1 outline-grey-blue-93 duration-100 hover:scale-110 hover:outline-orange',
+          )}
+          style={{ top: imgContainerHeight ? imgContainerHeight / 2 : 0 }}
         >
           <img src={prevIcon} width={7} />
         </button>
@@ -92,11 +106,15 @@ export default function ProductImages({
             e.stopPropagation();
             dispatch({ type: 'next' });
           }}
-          className="absolute right-4 top-1/2 grid h-8 w-8 -translate-y-1/2 place-content-center rounded-full bg-white/75 shadow-lg duration-100 hover:scale-110 hover:bg-white/100"
+          className={clsx(
+            inModal || !isSM ? 'right-4' : '-right-4',
+            'absolute grid h-8 w-8 -translate-y-1/2 place-content-center rounded-full bg-white shadow-lg outline outline-1 outline-grey-blue-93 duration-100 hover:scale-110 hover:outline-orange',
+          )}
+          style={{ top: imgContainerHeight ? imgContainerHeight / 2 : 0 }}
         >
           <img src={nextIcon} width={7} />
         </button>
-      </motion.div>
+      </div>
       {isXS && (
         <motion.div
           initial="init"
@@ -104,7 +122,7 @@ export default function ProductImages({
           variants={thumbParentVarients}
           className={clsx(
             inModal || 'sm:px-0',
-            'flex justify-center gap-2 px-4 xs:gap-4',
+            'mx-auto flex max-w-96 justify-center gap-2 px-4 xs:gap-4',
           )}
         >
           {productImgs.map((obj, i) => (
@@ -118,13 +136,13 @@ export default function ProductImages({
                 src={obj.thumbnail}
                 key={i}
                 alt=""
-                className="rounded duration-100 hover:opacity-70 sm:rounded-md"
+                className="rounded-sm duration-100 hover:opacity-70 sm:rounded-md"
               />
               {i === index && (
                 <motion.div
                   layoutId={inModal ? 'selected-img-modal' : 'selected-img'}
                   transition={{ duration: 0.2 }}
-                  className="absolute left-0 top-0 h-full w-full rounded outline outline-[3px] outline-orange sm:rounded-md"
+                  className="absolute left-0 top-0 h-full w-full rounded-sm outline outline-[3px] outline-orange sm:rounded-md"
                 />
               )}
             </motion.button>
