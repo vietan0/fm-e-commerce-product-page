@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useMediaQuery } from 'react-responsive';
 
@@ -48,12 +49,15 @@ export default function ProductImages({
   });
 
   return (
-    <div className="flex flex-col gap-3 sm:gap-8">
-      <motion.button
+    <div className="flex flex-col gap-4">
+      <motion.div
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="relative w-screen overflow-hidden xs:w-auto sm:rounded-xl"
-        onClick={inModal ? undefined : onOpen}
+        className={clsx(
+          inModal || 'xs:hover:cursor-pointer sm:rounded-xl',
+          'relative w-screen overflow-hidden xs:w-auto grid place-content-center',
+        )}
+        onClick={inModal ? undefined : isXS ? onOpen : undefined}
       >
         <AnimatePresence initial={false} mode="popLayout" custom={direction}>
           <motion.img
@@ -68,28 +72,40 @@ export default function ProductImages({
             alt=""
             width={1000}
             height={1000}
-            className="max-h-[300px] object-cover xs:max-h-[400px] sm:max-h-none"
+            className={clsx(
+              inModal ? 'object-contain' : 'object-cover',
+              'max-h-[300px] xs:max-h-[500px]',
+            )}
           />
         </AnimatePresence>
         <button
-          onClick={() => dispatch({ type: 'prev' })}
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatch({ type: 'prev' });
+          }}
           className="absolute left-4 top-1/2 grid h-8 w-8 -translate-y-1/2 place-content-center rounded-full bg-white/75 shadow-lg duration-100 hover:scale-110 hover:bg-white/100"
         >
           <img src={prevIcon} width={7} />
         </button>
         <button
-          onClick={() => dispatch({ type: 'next' })}
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatch({ type: 'next' });
+          }}
           className="absolute right-4 top-1/2 grid h-8 w-8 -translate-y-1/2 place-content-center rounded-full bg-white/75 shadow-lg duration-100 hover:scale-110 hover:bg-white/100"
         >
           <img src={nextIcon} width={7} />
         </button>
-      </motion.button>
+      </motion.div>
       {isXS && (
         <motion.div
           initial="init"
           animate="stagger"
           variants={thumbParentVarients}
-          className="flex gap-2 px-4 xs:gap-4 sm:px-0"
+          className={clsx(
+            inModal || 'sm:px-0',
+            'flex justify-center gap-2 px-4 xs:gap-4',
+          )}
         >
           {productImgs.map((obj, i) => (
             <motion.button
@@ -106,7 +122,7 @@ export default function ProductImages({
               />
               {i === index && (
                 <motion.div
-                  layoutId="selected-img-animate"
+                  layoutId={inModal ? 'selected-img-modal' : 'selected-img'}
                   transition={{ duration: 0.2 }}
                   className="absolute left-0 top-0 h-full w-full rounded outline outline-[3px] outline-orange sm:rounded-md"
                 />

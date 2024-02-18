@@ -5,6 +5,7 @@ import {
   useDisclosure,
 } from '@nextui-org/modal';
 import { useReducer } from 'react';
+import { useMediaQuery } from 'react-responsive';
 
 import galleryReducer from '../galleryReducer';
 import ProductImages from './ProductImages';
@@ -15,7 +16,12 @@ export default function ProductPage() {
     index: 0,
     direction: 1,
   });
-
+  const isXS = useMediaQuery({
+    query: '(min-width: 400px)',
+  });
+  const isMD = useMediaQuery({
+    query: '(min-width: 768px)',
+  });
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
@@ -27,28 +33,35 @@ export default function ProductPage() {
         onOpen={onOpen}
       />
       <ProductInfo />
-      <Modal
-        size="lg"
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        classNames={{
-          body: 'p-6 min-h-48',
-        }}
-      >
-        <ModalContent>
-          {(onClose) => (
-            <ModalBody>
-              <p>Body</p>
-              <button
-                onClick={onClose}
-                className="w-fit rounded px-6 py-2 outline outline-1 outline-orange"
-              >
-                Close
-              </button>
-            </ModalBody>
-          )}
-        </ModalContent>
-      </Modal>
+      {isXS && (
+        <Modal
+          size={isMD ? '2xl' : 'full'}
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          placement="center"
+          classNames={{
+            base: ' bg-black/50 backdrop-blur-md',
+            body: 'px-0 pb-4 pt-16',
+            backdrop: 'bg-black/80',
+            closeButton:
+              'mr-2 mt-2 hover:bg-white/30 duration-100 hover:text-orange text-2xl',
+          }}
+        >
+          <ModalContent>
+            {(_onClose) => (
+              <ModalBody>
+                <ProductImages
+                  inModal
+                  index={index}
+                  direction={direction}
+                  dispatch={dispatch}
+                  onOpen={onOpen}
+                />
+              </ModalBody>
+            )}
+          </ModalContent>
+        </Modal>
+      )}
     </div>
   );
 }
