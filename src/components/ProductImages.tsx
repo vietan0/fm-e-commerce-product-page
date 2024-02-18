@@ -76,7 +76,7 @@ export default function ProductImages({
         </AnimatePresence>
         <button
           onClick={() => dispatch({ type: 'prev' })}
-          className="absolute left-4 top-1/2 z-10 grid h-8 w-8 -translate-y-1/2 place-content-center rounded-full bg-white/75 shadow-lg duration-100 hover:scale-110 hover:bg-white/100"
+          className="absolute left-4 top-1/2 grid h-8 w-8 -translate-y-1/2 place-content-center rounded-full bg-white/75 shadow-lg duration-100 hover:scale-110 hover:bg-white/100"
         >
           <img src={prevIcon} width={7} />
         </button>
