@@ -1,4 +1,3 @@
-import { Modal, ModalBody, ModalContent } from '@nextui-org/modal';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useMediaQuery } from 'react-responsive';
 
@@ -34,17 +33,15 @@ type Props = {
   index: number;
   direction: Gallery['direction'];
   dispatch: React.Dispatch<GalleryAction>;
-  modalOpen: boolean;
-  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onOpen: () => void;
 };
 
 export default function ProductImages({
-  // inModal = false,
+  inModal = false,
   index,
   direction,
   dispatch,
-  modalOpen,
-  setModalOpen,
+  onOpen,
 }: Props) {
   const isXS = useMediaQuery({
     query: '(min-width: 400px)',
@@ -52,11 +49,11 @@ export default function ProductImages({
 
   return (
     <div className="flex flex-col gap-3 sm:gap-8">
-      <button onClick={() => setModalOpen(true)}>Toggle Modal</button>
       <motion.button
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         className="relative w-screen overflow-hidden xs:w-auto sm:rounded-xl"
+        onClick={inModal ? undefined : onOpen}
       >
         <AnimatePresence initial={false} mode="popLayout" custom={direction}>
           <motion.img
@@ -118,25 +115,6 @@ export default function ProductImages({
           ))}
         </motion.div>
       )}
-      <Modal
-        size="lg"
-        isOpen={modalOpen}
-        classNames={{
-          body: 'p-6 min-h-48',
-        }}
-      >
-        <ModalContent>
-          <ModalBody>
-            <p>Body</p>
-            <button
-              onClick={() => setModalOpen(false)}
-              className="w-fit rounded px-6 py-2 outline outline-1 outline-orange"
-            >
-              Close
-            </button>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
     </div>
   );
 }
