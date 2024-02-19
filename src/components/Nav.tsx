@@ -124,7 +124,7 @@ export default function Nav() {
       >
         <img src={menuIcon} alt="" className="w-full" />
       </button>
-      <a href="#">
+      <a aria-label="Home" href="#">
         <img
           src={sneakersLogo}
           alt=""

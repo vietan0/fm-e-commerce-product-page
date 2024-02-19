@@ -1,7 +1,16 @@
+import { useEffect } from 'react';
+
 import Header from './components/Header';
 import ProductPage from './components/ProductPage';
 
 export default function App() {
+  useEffect(() => {
+    const root = document.getElementById('root');
+    if (root) {
+      root.role = 'presentation';
+    }
+  }, []);
+
   return (
     <div
       id="App"

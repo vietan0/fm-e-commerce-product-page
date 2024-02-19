@@ -87,7 +87,8 @@ export default function Cart() {
         <PopoverTrigger>
           <button
             ref={scope}
-            className="relative grid h-10 w-10 place-content-center rounded-full outline outline-1 outline-transparent hover:bg-black/5"
+            className="relative grid h-10 w-10 place-content-center rounded-full outline outline-1 outline-transparent hover:bg-black/5 focus:outline-orange"
+            aria-label="Cart"
           >
             <img src={cartLogo} alt="" className="w-5" />
           </button>

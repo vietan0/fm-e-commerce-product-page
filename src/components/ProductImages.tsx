@@ -63,9 +63,15 @@ export default function ProductImages({
         animate={{ scale: 1, opacity: 1 }}
         className={clsx(
           inModal || 'xs:hover:cursor-pointer sm:rounded-xl',
-          'relative grid w-screen place-content-center overflow-hidden xs:w-auto',
+          'relative grid w-screen place-content-center overflow-hidden focus:outline-orange xs:w-auto',
         )}
         onClick={inModal ? undefined : isXS ? onOpen : undefined}
+        tabIndex={0}
+        role="button"
+        aria-label="Open lightbox"
+        onKeyUp={(e) => {
+          if (e.key === 'Enter') onOpen();
+        }}
       >
         <AnimatePresence initial={false} mode="popLayout" custom={direction}>
           <motion.img
@@ -95,11 +101,12 @@ export default function ProductImages({
           }}
           className={clsx(
             inModal || !isSM ? 'left-4' : '-left-4',
-            'absolute grid h-8 w-8 -translate-y-1/2 place-content-center rounded-full bg-white shadow-lg outline outline-1 outline-grey-blue-93 duration-100 hover:scale-110 hover:outline-orange',
+            'absolute grid h-8 w-8 -translate-y-1/2 place-content-center rounded-full bg-white shadow-lg outline outline-1 outline-grey-blue-93 hover:scale-110 hover:outline-orange focus:outline-orange',
           )}
+          aria-label="Previous image"
           style={{ top: imgContainerHeight ? imgContainerHeight / 2 : 0 }}
         >
-          <img src={prevIcon} width={7} />
+          <img src={prevIcon} width={7} alt="" />
         </button>
         <button
           onClick={(e) => {
@@ -108,11 +115,12 @@ export default function ProductImages({
           }}
           className={clsx(
             inModal || !isSM ? 'right-4' : '-right-4',
-            'absolute grid h-8 w-8 -translate-y-1/2 place-content-center rounded-full bg-white shadow-lg outline outline-1 outline-grey-blue-93 duration-100 hover:scale-110 hover:outline-orange',
+            'absolute grid h-8 w-8 -translate-y-1/2 place-content-center rounded-full bg-white shadow-lg outline outline-1 outline-grey-blue-93 hover:scale-110 hover:outline-orange focus:outline-orange',
           )}
+          aria-label="Next image"
           style={{ top: imgContainerHeight ? imgContainerHeight / 2 : 0 }}
         >
-          <img src={nextIcon} width={7} />
+          <img src={nextIcon} width={7} alt="" />
         </button>
       </div>
       {isXS && (
@@ -131,6 +139,7 @@ export default function ProductImages({
               key={i}
               className="relative h-fit"
               onClick={() => dispatch({ type: 'choose', payload: i })}
+              aria-label="Select image"
             >
               <img
                 src={obj.thumbnail}
@@ -139,7 +148,7 @@ export default function ProductImages({
                 className="rounded-sm duration-100 hover:opacity-70 sm:rounded-md"
               />
               {i === index && (
-                <motion.div
+                <motion.span
                   layoutId={inModal ? 'selected-img-modal' : 'selected-img'}
                   transition={{ duration: 0.2 }}
                   className="absolute left-0 top-0 h-full w-full rounded-sm outline outline-[3px] outline-orange sm:rounded-md"
