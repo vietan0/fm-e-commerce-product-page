@@ -1,9 +1,12 @@
 import clsx from 'clsx';
 import { AnimatePresence, motion, useAnimate } from 'framer-motion';
-import { useReducer } from 'react';
+import { useContext, useReducer } from 'react';
 
 import minusIcon from '../assets/images/icon-minus.svg';
 import plusIcon from '../assets/images/icon-plus.svg';
+import { CartContext } from '../CartContext';
+import productImgs from '../productImgs';
+import shakeAnimation from '../shakeAnimation';
 
 type AmountCounter = {
   amountToAdd: number;
@@ -23,11 +26,6 @@ function reducer(
   } else return { amountToAdd: amountToAdd + 1, direction: 'up' };
 }
 
-const shakeAnimation = {
-  rotate: [0, 20, -20, 10, -10, 5, -5, 0],
-  scale: [1, 1.2, 1.1, 1.4, 1],
-};
-
 const variants = {
   enter: (direction: AmountCounter['direction']) => ({
     y: direction === 'up' ? -50 : 50,
@@ -38,12 +36,17 @@ const variants = {
   }),
 };
 
+const name = 'Fall Limited Edition Sneakers';
+const price = 125.0;
+
 export default function ProductInfo() {
   const [{ amountToAdd, direction }, dispatch] = useReducer(reducer, {
     amountToAdd: 1,
     direction: 'up',
   });
   const [scope, animate] = useAnimate();
+  const { addToCart } = useContext(CartContext);
+
   return (
     <div
       className={clsx('flex flex-col gap-6 px-4 pb-12 pt-8 sm:p-0', {
@@ -70,7 +73,7 @@ export default function ProductInfo() {
       <div className="Prices flex items-center justify-between gap-1 sm:flex-col sm:items-start">
         <div className="Left flex items-center gap-4">
           <span className="ActualPrice text-xl font-bold tracking-wide xs:text-3xl">
-            $125.00
+            ${price.toFixed(2)}
           </span>
           <motion.span
             animate={{
@@ -121,6 +124,14 @@ export default function ProductInfo() {
           onMouseEnter={() => {
             animate(scope.current, shakeAnimation, { duration: 0.3 });
           }}
+          onClick={() =>
+            addToCart({
+              name,
+              img: productImgs[0].thumbnail,
+              price: 125.0,
+              number: amountToAdd,
+            })
+          }
           className="flex min-h-12 min-w-48 items-center justify-center gap-4 rounded-xl bg-orange font-bold text-white duration-100 hover:bg-orange/80"
         >
           <svg
