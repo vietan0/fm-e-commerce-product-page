@@ -1,20 +1,20 @@
 import { motion } from 'framer-motion';
-import { useMediaQuery } from 'react-responsive';
+import useResizeObserver from 'use-resize-observer';
 
 import Nav from './Nav';
 import UserTools from './UserTools';
 
 export default function Header() {
-  const isSM = useMediaQuery({ query: '(min-width: 640px)' });
+  const { ref, width } = useResizeObserver();
   return (
     <>
-      <div className="relative h-6 bg-pale-orange">
+      <div ref={ref} className="relative h-6 overflow-hidden bg-pale-orange">
         <motion.span
-          initial={{ x: isSM ? '-40vw' : '-80vw' }}
+          initial={{ x: -320 }}
           animate={{
-            x: '120vw',
+            x: width,
             transition: {
-              duration: 16,
+              duration: width! > 840 ? 32 : width! > 400 ? 24 : 16,
               ease: 'linear',
               repeat: Infinity,
               repeatType: 'loop',
@@ -23,7 +23,11 @@ export default function Header() {
           className="absolute top-1 inline-block whitespace-nowrap text-[0.7rem] font-bold tracking-wide text-orange"
         >
           Use code CONEBONE69 to get 20% off at{' '}
-          <a href="https://www.youtube.com/watch?v=0_zA4szLY2k" target="_blank">
+          <a
+            href="https://www.youtube.com/watch?v=0_zA4szLY2k"
+            target="_blank"
+            className="text-grey-blue-10 underline hover:text-orange"
+          >
             luxebidet.com
           </a>
         </motion.span>
@@ -31,7 +35,7 @@ export default function Header() {
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className="sticky flex w-full max-w-screen-lg justify-between gap-4 border-b-2 bg-white px-4 xs:gap-0 sm:px-6 lg:px-0"
+        className="sticky flex w-full max-w-screen-xl justify-between gap-4 border-b-2 bg-white px-4 xs:gap-0 sm:px-6 xl:px-0"
       >
         <Nav />
         <UserTools />

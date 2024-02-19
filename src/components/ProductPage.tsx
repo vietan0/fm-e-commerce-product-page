@@ -25,7 +25,7 @@ export default function ProductPage() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
-    <div className="flex flex-col items-center p-0 sm:flex-row sm:gap-8 sm:p-8 lg:gap-16 lg:p-16 [&>*]:min-w-[240px] [&>*]:flex-1">
+    <div className="flex flex-col items-center p-0 sm:flex-row sm:gap-8 sm:p-8 lg:gap-24 lg:p-16 [&>*]:min-w-[240px] [&>*]:flex-1">
       <ProductImages
         index={index}
         direction={direction}
@@ -34,6 +34,7 @@ export default function ProductPage() {
       />
       <ProductInfo />
       {isXS && (
+        // Lightbox
         <Modal
           size={isMD ? '2xl' : 'full'}
           isOpen={isOpen}

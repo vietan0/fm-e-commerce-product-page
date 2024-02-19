@@ -49,9 +49,12 @@ export default function ProductInfo() {
 
   return (
     <div
-      className={clsx('flex flex-col gap-6 px-4 pb-12 pt-8 sm:p-0', {
-        '[&_*]:outline': false,
-      })}
+      className={clsx(
+        'flex flex-col gap-6 px-4 pb-12 pt-8 sm:p-0 lg:min-h-[440px]',
+        {
+          '[&_*]:outline': false,
+        },
+      )}
     >
       <div className="Title">
         <p className="SneakerCompany mb-2 text-sm font-bold uppercase tracking-widest text-orange">
