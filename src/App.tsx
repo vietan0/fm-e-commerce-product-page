@@ -9,6 +9,10 @@ export default function App() {
     >
       <Header />
       <main>
+        <h1 className="sr-only">
+          E-Commerce Produce Page - Frontend Mentor Challenge - Solution by Việt
+          An
+        </h1>
         <ProductPage />
       </main>
     </div>
