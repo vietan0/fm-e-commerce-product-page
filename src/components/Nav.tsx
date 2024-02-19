@@ -99,7 +99,7 @@ export default function Nav() {
   const mobileUl = createPortal(
     <AnimatePresence>
       {mobileUlOpen && (
-        <div id="MobileUl">
+        <div id="MobileUl" className="fixed z-20">
           <motion.div
             key="backdrop"
             initial={{ opacity: 0 }}
